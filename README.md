@@ -5,14 +5,13 @@ This repository provides the **official** implementation of the paper "[Z-SSMNet
 For more information about the **Z-SSMNet**, please read the following paper (arXiv preprint)
 
 ```
-@misc{yuan2024zssmnetzonalawareselfsupervisedmesh,
-      title={Z-SSMNet: Zonal-aware Self-supervised Mesh Network for Prostate Cancer Detection and Diagnosis with Bi-parametric MRI}, 
-      author={Yuan Yuan and Euijoon Ahn and Dagan Feng and Mohamad Khadra and Jinman Kim},
-      year={2024},
-      eprint={2212.05808},
-      archivePrefix={arXiv},
-      primaryClass={eess.IV},
-      url={https://arxiv.org/abs/2212.05808}, 
+@article{yuan2025z,
+  title={Z-SSMNet: Zonal-aware Self-supervised Mesh Network for prostate cancer detection and diagnosis with Bi-parametric MRI},
+  author={Yuan, Yuan and Ahn, Euijoon and Feng, Dagan and Khadra, Mohamed and Kim, Jinman},
+  journal={Computerized Medical Imaging and Graphics},
+  pages={102510},
+  year={2025},
+  publisher={Elsevier}
 }
 ```
 
