@@ -67,7 +67,6 @@ def prepare_zonal_mask_npz(
             resampler.SetReferenceImage(mask_crop)
             resampler.SetOutputSpacing((resample_spacing[2], resample_spacing[1], resample_spacing[0]))
             resampler.SetOutputDirection(org_direction)
-            resampler.SetOutputOrigin(org_origin)
             resampler.SetSize((resample_size[2], resample_size[1], resample_size[0]))
             resampler.SetInterpolator(sitk.sitkNearestNeighbor)
             mask_resample = resampler.Execute(mask_crop)
