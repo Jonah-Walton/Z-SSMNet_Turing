@@ -19,7 +19,6 @@ class MissingSequenceError(Exception):
         message = f"Could not find scan for {name} in {folder} (files: {os.listdir(folder)})"
         super().__init__(message)
 
-
 class MultipleScansSameSequencesError(Exception):
     """Exception raised when multiple scans of the same sequences are provided."""
 

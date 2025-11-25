@@ -16,7 +16,7 @@ from torch import nn
 import torch
 from nnunet.network_architecture.neural_network import SegmentationNetwork
 import torch.nn.functional as F
-from nnunet.network_architecture.MNet_basic_module import CB3d, BasicNet
+from MNet_basic_module import CB3d, BasicNet
 
 def FMU(x1, x2, mode='sub'):
     """

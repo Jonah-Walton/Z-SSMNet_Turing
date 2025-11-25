@@ -14,8 +14,7 @@ from pathlib import Path
 import numpy as np
 from carbontracker.tracker import CarbonTracker
 from nnunet.utilities import shutil_sol
-from nnunet.utilities.io import (checksum, path_exists, read_json,
-                                 refresh_file_list, write_json)
+from io import checksum, path_exists, read_json,refresh_file_list, write_json
 from picai_prep.data_utils import atomic_file_copy
 
 PLANS = 'nnUNetPlansv2.1'
