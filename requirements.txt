@@ -1,3 +1,10 @@
+#Python Version 3.12.12
+#Cuda Version 12.6
+
+
+#pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126
+
+#From Z-SSMNet
 numpy
 tqdm
 SimpleITK
@@ -6,3 +13,38 @@ scikit-learn
 picai_eval==1.4.4
 picai_prep==2.1.3
 
+#From Z-SSMNet\nnUNet\tests\docker
+#torch==1.10.0+cu111
+tqdm
+dicom2nifti
+scikit-image>=0.14
+medpy
+scipy
+batchgenerators>=0.23
+numpy
+scikit-learn
+SimpleITK
+pandas
+requests
+nibabel
+tifffile
+matplotlib
+
+pytest
+
+#From Z-SSMNet\src\z_ssmnet\zonal_segmentation_gc\requirements.txt
+evalutils==0.3.0
+
+#From \Z-SSMNet\src\z_ssmnet\z_nnmnet\training_docker\ModifiedDockerFile
+graphviz
+git+https://github.com/nanohanno/hiddenlayer.git@bugfix/get_trace_graph#egg=hiddenlayer
+carbontracker
+
+# PI-CAI repositories
+picai_eval==1.4.4
+picai_prep==2.1.3
+picai_baseline==0.8.2
+mlxtend==0.19.0
+
+# SSL required modules
+tensorboard
