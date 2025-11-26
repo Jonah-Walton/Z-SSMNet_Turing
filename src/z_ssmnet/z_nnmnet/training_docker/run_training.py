@@ -27,7 +27,6 @@ from nnunet.training.network_training.nnUNetTrainerV2_CascadeFullRes import \
     nnUNetTrainerV2CascadeFullRes
 from nnunet.utilities.task_name_id_conversion import convert_id_to_task_name
 
-
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("network")

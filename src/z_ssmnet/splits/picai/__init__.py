@@ -15,7 +15,6 @@
 import json
 from pathlib import Path
 
-
 # read dataset configurations
 train_splits = {}
 for fold in range(5):

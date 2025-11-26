@@ -12,15 +12,9 @@ from utils import *
 from config_zonal import Config
 from torch import nn
 import torch
-from nnunet.training.learning_rate.poly_lr import poly_lr
-from nnunet.network_architecture.generic_UNet import Generic_UNet
-from nnunet.network_architecture.initialization import InitWeights_He
 import random
-import copy
 from scipy.special import comb
 import sys
-from torch.optim import lr_scheduler
-from optparse import OptionParser
 from torch.utils.tensorboard import SummaryWriter
 
 from MNet import MNet

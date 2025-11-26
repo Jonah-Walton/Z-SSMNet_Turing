@@ -13,9 +13,6 @@
 # limitations under the License.
 
 from torch import nn
-import torch
-import torch.nn.functional as F
-
 
 class CNA3d(nn.Module): # conv + norm + activation
     def __init__(self, in_channels, out_channels, kSize, stride, padding=(1,1,1), bias=True, norm_args=None, activation_args=None):

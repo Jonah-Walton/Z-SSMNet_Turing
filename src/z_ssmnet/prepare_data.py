@@ -20,11 +20,9 @@ from typing import Any, Dict, Iterable, Optional, Union
 
 import SimpleITK as sitk
 from picai_prep import MHA2nnUNetConverter
-from picai_prep.examples.mha2nnunet.picai_archive import \
-    generate_mha2nnunet_settings
+from picai_prep.examples.mha2nnunet.picai_archive import generate_mha2nnunet_settings
 
-from z_ssmnet.splits.picai_nnunet import \
-    nnunet_splits as picai_pub_splits
+from z_ssmnet.splits.picai_nnunet import nnunet_splits as picai_pub_splits
 
 """
 Script to prepare PI-CAI data into the nnUNet raw data format

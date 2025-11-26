@@ -23,11 +23,9 @@ from picai_eval import evaluate_folder
 from picai_prep.preprocessing import crop_or_pad
 from report_guided_annotation import extract_lesion_candidates
 
-from picai_baseline.nnunet.softmax_export import \
-    convert_cropped_npz_to_original_nifty
+from picai_baseline.nnunet.softmax_export import convert_cropped_npz_to_original_nifty
 from picai_baseline.splits.picai import valid_splits as picai_pub_valid_splits
-from picai_baseline.splits.picai_nnunet import \
-    valid_splits as picai_pub_nnunet_valid_splits
+from picai_baseline.splits.picai_nnunet import valid_splits as picai_pub_nnunet_valid_splits
 
 
 try:

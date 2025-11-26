@@ -4,11 +4,9 @@ from pathlib import Path
 
 import SimpleITK as sitk
 from evalutils import SegmentationAlgorithm
-from evalutils.validators import (UniqueImagesValidator,
-                                  UniquePathIndicesValidator)
+from evalutils.validators import UniqueImagesValidator, UniquePathIndicesValidator
 from picai_prep.data_utils import atomic_image_write
-from picai_prep.preprocessing import (PreprocessingSettings, Sample,
-                                      resample_to_reference_scan)
+from picai_prep.preprocessing import Sample, resample_to_reference_scan
 
 import numpy as np
 

@@ -22,9 +22,7 @@ import SimpleITK as sitk
 from batchgenerators.utilities.file_and_folder_operations import *
 from picai_eval.image_utils import read_prediction
 
-from nnunet.preprocessing.preprocessing import (get_do_separate_z,
-                                                get_lowres_axis,
-                                                resample_data_or_seg)
+from nnunet.preprocessing.preprocessing import get_do_separate_z, get_lowres_axis, resample_data_or_seg
 
 
 # adapted from https://github.com/MIC-DKFZ/nnUNet/blob/master/nnunet/inference/segmentation_export.py

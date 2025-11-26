@@ -17,18 +17,15 @@ import argparse
 import json
 from multiprocessing import Pool
 from pathlib import Path
-from typing import Callable, Optional, Union
+from typing import Optional, Union
 
 import numpy as np
 from picai_eval import evaluate_folder
-from picai_prep.preprocessing import crop_or_pad
 from report_guided_annotation import extract_lesion_candidates
 
-from picai_baseline.nnunet.softmax_export import \
-    convert_cropped_npz_to_original_nifty
+from picai_baseline.nnunet.softmax_export import convert_cropped_npz_to_original_nifty
 from picai_baseline.splits.picai import valid_splits as picai_pub_valid_splits
-from picai_baseline.splits.picai_nnunet import \
-    valid_splits as picai_pub_nnunet_valid_splits
+from picai_baseline.splits.picai_nnunet import valid_splits as picai_pub_nnunet_valid_splits
 from picai_eval.image_utils import read_prediction
 import SimpleITK as sitk
 

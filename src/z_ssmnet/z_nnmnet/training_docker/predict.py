@@ -24,7 +24,6 @@ from batchgenerators.utilities.file_and_folder_operations import *
 from multiprocessing import Process, Queue
 import torch
 import SimpleITK as sitk
-import shutil
 import nnunet.utilities.shutil_sol as shutil_sol
 from multiprocessing import Pool
 from nnunet.postprocessing.connected_components import load_remove_save, load_postprocessing

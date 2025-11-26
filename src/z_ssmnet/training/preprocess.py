@@ -17,11 +17,9 @@ import os
 from pathlib import Path
 from subprocess import check_call
 
-from picai_baseline.prepare_data_semi_supervised import \
-    prepare_data_semi_supervised
+from picai_baseline.prepare_data_semi_supervised import prepare_data_semi_supervised
 
-from z_ssmnet.ssl_read_data_from_disk.data_preprocessing_zonal import \
-    data_preprocessing_zonal
+from z_ssmnet.ssl_read_data_from_disk.data_preprocessing_zonal import data_preprocessing_zonal
 from z_ssmnet.z_nnmnet.zonal_mask_npz import prepare_zonal_mask_npz
 
 
