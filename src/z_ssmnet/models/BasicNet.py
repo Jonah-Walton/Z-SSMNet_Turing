@@ -12,13 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import torch
-from models.MNet_SegmentationNetwork import MNet
+from torch import nn
 
-if __name__ == '__main__':
-    MNet = MNet(1, 3, kn=(2, 2, 2, 2, 2), ds=True, FMU='sub')
-    input = torch.randn((1, 1, 19, 255, 256))
-    output = MNet(input)
+class BasicNet(nn.Module):
+    norm_kwargs = {'affine': True}
+    activation_kwargs = {'negative_slope': 1e-2, 'inplace': True}
 
-    print([e.shape for e in output])
+    def __init__(self):
+        super(BasicNet, self).__init__()
 
+    def parameter_count(self):
+        print("model have {} paramerters in total".format(sum(x.numel() for x in self.parameters()) / 1e6))

@@ -13,12 +13,21 @@
 # limitations under the License.
 
 import torch
-from models.MNet_SegmentationNetwork import MNet
 
-if __name__ == '__main__':
-    MNet = MNet(1, 3, kn=(2, 2, 2, 2, 2), ds=True, FMU='sub')
-    input = torch.randn((1, 1, 19, 255, 256))
-    output = MNet(input)
-
-    print([e.shape for e in output])
-
+def FMU(x1, x2, mode='sub'):
+    """
+    feature merging unit
+    Args:
+        x1:
+        x2:
+        mode: types of fusion
+    Returns:
+    """
+    if mode == 'sum':
+        return torch.add(x1, x2)
+    elif mode == 'sub':
+        return torch.abs(x1 - x2)
+    elif mode == 'cat':
+        return torch.cat((x1, x2), dim=1)
+    else:
+        raise Exception('Unexpected mode')

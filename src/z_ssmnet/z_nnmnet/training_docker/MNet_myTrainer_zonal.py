@@ -31,7 +31,8 @@ from torch import nn
 from torch.cuda.amp import autocast
 from nnunet.training.learning_rate.poly_lr import poly_lr
 from batchgenerators.utilities.file_and_folder_operations import *
-from MNet import MNet
+
+from models.MNet_SegmentationNetwork import MNet
 
 from nnunet.training.loss_functions.crossentropy import RobustCrossEntropyLoss
 from nnunet.training.network_training.nnUNet_variants.loss_function.nnUNetTrainerV2_focalLoss import FocalLoss

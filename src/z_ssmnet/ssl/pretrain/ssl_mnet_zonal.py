@@ -15,7 +15,7 @@ import random
 import sys
 from torch.utils.tensorboard import SummaryWriter
 
-from MNet import MNet
+from models.MNet_SegmentationNetwork import MNet
 
 
 def pretrain(

@@ -16,9 +16,9 @@ from torch import nn
 from torch.utils.tensorboard import SummaryWriter
 
 from z_ssmnet.ssl_read_data_from_disk.pretrain.config_zonal import Config
-from z_ssmnet.ssl_read_data_from_disk.pretrain.MNet import MNet
 from z_ssmnet.ssl_read_data_from_disk.pretrain.utils import CustomDataset
 
+from models.MNet_SegmentationNetwork import MNet
 
 def pretrain(
     model_dir: Union[Path, str] = "/workdir/SSL/pretrained_weights/",
