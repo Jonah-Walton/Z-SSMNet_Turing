@@ -76,7 +76,7 @@ def verify_same_geometry(img_1: sitk.Image, img_2: sitk.Image):
         return False
 
 
-def verify_contains_only_expected_labels(itk_img: str, valid_labels: (tuple | list)):
+def verify_contains_only_expected_labels(itk_img: str, valid_labels: (tuple, list)):
     img_npy = sitk.GetArrayFromImage(sitk.ReadImage(itk_img))
     uniques = np.unique(img_npy)
     invalid_uniques = [i for i in uniques if i not in valid_labels]
@@ -167,7 +167,6 @@ def verify_dataset_integrity(folder):
     # verify that only properly declared values are present in the labels
     print("Verifying label values")
     expected_labels = list(int(i) for i in dataset['labels'].keys())
-    expected_labels.sort()
 
     # check if labels are in consecutive order
     assert expected_labels[0] == 0, 'The first label must be 0 and maps to the background'

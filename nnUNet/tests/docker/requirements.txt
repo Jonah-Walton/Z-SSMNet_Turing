@@ -6,7 +6,7 @@ medpy
 scipy
 batchgenerators>=0.23
 numpy
-scikit-learn
+sklearn
 SimpleITK
 pandas
 requests
