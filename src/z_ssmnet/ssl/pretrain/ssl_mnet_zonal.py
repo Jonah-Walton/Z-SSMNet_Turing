@@ -6,14 +6,12 @@ import warnings
 warnings.filterwarnings('ignore')
 import os
 from tqdm import tqdm
-import matplotlib.pyplot as plt
 import numpy as np
 from utils import *
 from config_zonal import Config
 from torch import nn
 import torch
 import random
-from scipy.special import comb
 import sys
 from torch.utils.tensorboard import SummaryWriter
 
