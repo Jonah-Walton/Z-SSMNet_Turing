@@ -35,7 +35,9 @@ evalutils==0.3.0
 #From \Z-SSMNet\src\z_ssmnet\z_nnmnet\training_docker\ModifiedDockerFile
 graphviz
 git+https://github.com/nanohanno/hiddenlayer.git@bugfix/get_trace_graph#egg=hiddenlayer
-carbontracker #Requires Microsoft Visual C++ 14.0 or greater is required. Get it with "Microsoft C++ Build Tools"
+carbontracker 
+    #carbontracker Requires Microsoft Visual C++ 14.0 or greater is required. Get it with "Microsoft C++ Build Tools"
+    #carbontracker, measures the environmental impact of training the model - it has no effect on the model itself
 
 # PI-CAI repositories
 picai_baseline==0.8.2

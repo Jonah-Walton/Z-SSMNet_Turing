@@ -27,7 +27,7 @@ import SimpleITK as sitk
 from tqdm import tqdm
 from optparse import OptionParser
 from glob import glob
-
+from setup_config import setup_config
 
 def make_cubes(
     fold: int = 0,
@@ -55,55 +55,16 @@ def make_cubes(
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
 
-    class setup_config():
-        adc_max = 3000.0
-        adc_min = 0.0
-        
-        def __init__(self, 
-                    input_rows=None, 
-                    input_cols=None,
-                    input_deps=None,
-                    crop_rows=None, 
-                    crop_cols=None,
-                    len_border=None,
-                    len_border_z=None,
-                    scale=None,
-                    DATA_DIR=None,
-                    train_fold=[0,1,2,3,4],
-                    valid_fold=[5],
-                    ):
-            self.input_rows = input_rows
-            self.input_cols = input_cols
-            self.input_deps = input_deps
-            self.crop_rows = crop_rows
-            self.crop_cols = crop_cols
-            self.len_border = len_border
-            self.len_border_z = len_border_z
-            self.scale = scale
-            self.DATA_DIR = DATA_DIR
-            self.train_fold = train_fold
-            self.valid_fold = valid_fold
-
-
-        def display(self):
-            """Display Configuration values."""
-            print("\nConfigurations:")
-            for a in dir(self):
-                if not a.startswith("__") and not callable(getattr(self, a)):
-                    print("{:30} {}".format(a, getattr(self, a)))
-            print("\n")
-
-
     config = setup_config(input_rows=input_rows,
-                        input_cols=input_cols,
-                        input_deps=input_deps,
-                        crop_rows=crop_rows,
-                        crop_cols=crop_cols,
-                        scale=scale,
-                        len_border=0,
-                        len_border_z=0,
-                        DATA_DIR=data_dir,
-                        )
+        input_cols=input_cols,
+        input_deps=input_deps,
+        crop_rows=crop_rows,
+        crop_cols=crop_cols,
+        scale=scale,
+        len_border=0,
+        len_border_z=0,
+        DATA_DIR=data_dir,
+        )
     config.display()
 
     def infinite_generator_from_one_volume(config, t2_array, adc_array, dwi_array, seg_array):
