@@ -12,20 +12,20 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import argparse
 import json
 import os
 from pathlib import Path
-from typing import Any, Dict, Iterable, Optional, Union
+from typing import Any, Dict, Optional, Union
 
 import SimpleITK as sitk
 from picai_prep import MHA2nnUNetConverter
 from picai_prep.data_utils import atomic_image_write
-from picai_prep.examples.mha2nnunet.picai_archive import \
-    generate_mha2nnunet_settings
+from picai_prep.examples.mha2nnunet.picai_archive import generate_mha2nnunet_settings
 from tqdm import tqdm
 
-from z_ssmnet.splits.picai import nnunet_splits as picai_splits
+from splits.picai import nnunet_splits as picai_splits
+
+from config.prepare_data_config import Prepare_Data_Config
 
 """
 Script to prepare PI-CAI data into the nnUNet raw data format
@@ -45,17 +45,14 @@ def preprocess_picai_annotation(lbl: sitk.Image) -> sitk.Image:
     lbl_new.CopyInformation(lbl)
     return lbl_new
 
-
 def prepare_data_semi_supervised(
     workdir: Union[Path, str] = "/workdir",
     inputdir: Union[Path, str] = "/input",
     imagesdir: str = "images",
     labelsdir: str = "labels",
-    spacing: Optional[Iterable[float]] = None,
-    matrix_size: Optional[Iterable[int]] = None,
-    preprocessing_kwargs: Optional[Dict[str, Any]] = None,
     splits: str = "picai_pub",
     task: str = "Task2302_z-nnmnet",
+    preprocessing_kwargs: Optional[Dict[str, Any]] = None
 ):
 
     # prepare preprocessing kwargs
@@ -65,14 +62,6 @@ def prepare_data_semi_supervised(
         preprocessing_kwargs = json.loads(preprocessing_kwargs)
     if not isinstance(preprocessing_kwargs, dict):
         raise ValueError("preprocessing_kwargs must be a dict or None")
-    if spacing:
-        if "spacing" in preprocessing_kwargs:
-            raise ValueError("Cannot specify both --spacing and --preprocessing_kwargs['spacing']")
-        preprocessing_kwargs["spacing"] = spacing
-    if matrix_size:
-        if "matrix_size" in preprocessing_kwargs:
-            raise ValueError("Cannot specify both --matrix_size and --preprocessing_kwargs['matrix_size']")
-        preprocessing_kwargs["matrix_size"] = matrix_size
 
     # select splits
     splits = {
@@ -168,45 +157,15 @@ def prepare_data_semi_supervised(
             json.dump(splits, fp)
         print(f"Saved cross-validation splits to {nnUNet_splits_path}")
 
-
 if __name__ == "__main__":
-    # parse command line arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--workdir", type=str, default=os.environ.get("workdir", "/workdir"),
-                        help="Path to the working directory (default: /workdir, or the environment variable 'workdir')")
-    parser.add_argument("--inputdir", type=str, default=os.environ.get("inputdir", "/input"),
-                        help="Path to the input dataset (default: /input, or the environment variable 'inputdir')")
-    parser.add_argument("--imagesdir", type=str, default="images",
-                        help="Path to the images, relative to --inputdir (default: /input/images)")
-    parser.add_argument("--labelsdir", type=str, default="labels",
-                        help="Path to the labels, relative to --inputdir (root of labels) (default: /input/labels)")
-    parser.add_argument("--spacing", type=float, nargs="+", required=False,
-                        help="Spacing to preprocess images to. Default: keep as-is.")
-    parser.add_argument("--matrix_size", type=int, nargs="+", required=False,
-                        help="Matrix size to preprocess images to. Default: keep as-is.")
-    parser.add_argument("--preprocessing_kwargs", type=str, required=False,
-                        help='Preprocessing kwargs to pass to the MHA2nnUNetConverter. " + \
-                            "E.g.: `{"crop_only": true}`. Must be valid json.')
-    parser.add_argument("--splits", type=str, default="picai_pub",
-                        help="Splits to save for cross-validation. Available: picai_pub, picai_pubpriv.")
-    parser.add_argument("--task", type=str, default="Task2302_z-nnmnet",
-                        help="Task name (default: Task2302_z-nnmnet)")
-    try:
-        args = parser.parse_args()
-    except Exception as e:
-        print(f"Parsing all arguments failed: {e}")
-        print("Retrying with only the known arguments...")
-        args, _ = parser.parse_known_args()
+    config = Prepare_Data_Config()
 
     prepare_data_semi_supervised(
-        workdir=args.workdir,
-        inputdir=args.inputdir,
-        imagesdir=args.imagesdir,
-        labelsdir=args.labelsdir,
-        spacing=args.spacing,
-        matrix_size=args.matrix_size,
-        preprocessing_kwargs=args.preprocessing_kwargs,
-        splits=args.splits,
-        task=args.task,
+        workdir=config.workdir,
+        inputdir=config.inputdir,
+        imagesdir=config.imagesdir,
+        labelsdir=config.labelsdir,
+        splits=config.splits,
+        task=config.taskname,
     )
     print("Finished.")

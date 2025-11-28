@@ -1,3 +1,9 @@
+input/images/*
+!input/images/.gitkeep
+
+workdir/*
+!workdir/.gitkeep
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

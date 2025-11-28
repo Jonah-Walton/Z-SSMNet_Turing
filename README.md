@@ -28,42 +28,20 @@ pip install -r requirements.txt
 
 We define setup steps that must be completed before following the algorithm tutorials.
 
-### Folder Structure
-
-We define three main folders that must be prepared apriori:
-
-* `/input/` contains one of the [PI-CAI datasets](https://pi-cai.grand-challenge.org/DATA/). This can be the Public Training and Development Dataset, the Private Training Dataset, the Hidden Validation and Tuning Cohort, or the Hidden Testing Cohort.
-  * `/input/images/` contains the imaging files. For the Public Training and Development Dataset, these can be retrieved [here](https://zenodo.org/record/6624726).
-  * `/input/labels/` contains the annotations. For the Public Training and Development Dataset, these can be retrieved [here](https://github.com/DIAGNijmegen/picai_labels).
-* `/workdir/` stores intermediate results, such as preprocessed images and annotations.
-  * `/workdir/results/[model name]/` stores model checkpoints/weights during training (enables the ability to pause/resume training).
-* `/output/` stores training output, such as trained model weights and preprocessing plan.
-
 ### Data Preparation
 
 Unless specified otherwise, this tutorial assumes that the [PI-CAI: Public Training and Development Dataset](https://pi-cai.grand-challenge.org/DATA/) will be downloaded and unpacked. Before downloading the dataset, read its [documentation](https://zenodo.org/record/6624726) and [dedicated forum post](https://grand-challenge.org/forums/forum/pi-cai-607/topic/public-training-and-development-dataset-updates-and-fixes-631/) (for all updates/fixes, if any). To download and unpack the dataset, run the following commands:
 
 ```shell
-# download all folds
+# It might be quicker to just download the dataset to downloads and transfer
+# download all folds (0-4)
 curl -C - "https://zenodo.org/record/6624726/files/picai_public_images_fold0.zip?download=1" --output picai_public_images_fold0.zip
-curl -C - "https://zenodo.org/record/6624726/files/picai_public_images_fold1.zip?download=1" --output picai_public_images_fold1.zip
-curl -C - "https://zenodo.org/record/6624726/files/picai_public_images_fold2.zip?download=1" --output picai_public_images_fold2.zip
-curl -C - "https://zenodo.org/record/6624726/files/picai_public_images_fold3.zip?download=1" --output picai_public_images_fold3.zip
-curl -C - "https://zenodo.org/record/6624726/files/picai_public_images_fold4.zip?download=1" --output picai_public_images_fold4.zip
 
 # unzip all folds
 unzip picai_public_images_fold0.zip -d /input/images/
-unzip picai_public_images_fold1.zip -d /input/images/
-unzip picai_public_images_fold2.zip -d /input/images/
-unzip picai_public_images_fold3.zip -d /input/images/
-unzip picai_public_images_fold4.zip -d /input/images/
-```
-Note, I have found that it is quicker to install from the documentation
 
-Also, collect the training annotations via the following command:
-
-```shell
-git clone https://github.com/DIAGNijmegen/picai_labels /input/labels/
+# Replace Download labels
+git clone https://github.com/DIAGNijmegen/picai_labels {path to directory}/input/labels/
 ```
 
 ### Cross-Validation Splits
