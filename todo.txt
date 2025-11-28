@@ -1,11 +1,3 @@
-1. Sort out the folder structure
-    /input/
-        /input/images/ - contains the data images
-        /input/labels/ - contains the data labels
-    /workdir/
-        /workdir/results/[model name]/ - stores models checkpoints and weights during trainign
-    /output/ - stores training output, such as trained model and preprocessing plan
-
 2. Ensure that all linux code is out of the repository
 3. Create a python script which runs each stage
     a. Data Preprocessing
