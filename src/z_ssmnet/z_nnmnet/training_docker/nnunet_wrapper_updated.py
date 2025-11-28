@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Windows-compatible nnUNet pipeline wrapper.
 """
@@ -14,15 +13,9 @@ from collections import OrderedDict
 from copy import deepcopy
 from pathlib import Path
 
-import numpy as np
-from carbontracker.tracker import CarbonTracker
 from customerized_carbon_tracker import CustomizedCarbonTracker
 
-# Replace shutil_sol (not available on Windows)
-# nnUNet uses a slightly modified shutil, but standard shutil works here
-import shutil as shutil_sol
-
-from io import checksum, path_exists, read_json, refresh_file_list, write_json
+from znnmnet_utils import path_exists, read_json, write_json, refresh_file_list
 from picai_prep.data_utils import atomic_file_copy
 
 PLANS = "nnUNetPlansv2.1"
