@@ -1,7 +1,5 @@
 # Z-SSMNet: Zonal-aware Self-Supervised Mesh Network for Prostate Cancer Detection and Diagnosis with Bi-parametric MRI
 
-This repository provides the **official** implementation of the paper "[Z-SSMNet: Zonal-aware Self-Supervised Mesh Network for Prostate Cancer Detection and Diagnosis with bpMRI]([https://arxiv.org/abs/2212.05808](https://www.sciencedirect.com/science/article/pii/S0895611125000199))". In this paper, we propose a new Zonal-aware Self-supervised Mesh Network that adaptively fuses multiple 2D/2.5D/3D CNNs to effectively balance representation for sparse inter-slice information and dense intra-slice information in bpMRI. A self-supervised learning (SSL) technique is further introduced to pre-train our network using unlabelled data to learn the generalizable image features. Furthermore, we constrained our network to understand the zonal-specific domain knowledge to improve the precision of diagnosis of clinically significant prostate cancer (csPCa). Our model was developed on the [PI-CAI dataset](https://zenodo.org/record/6624726) while participating in the [PI-CAI challenge](https://pi-cai.grand-challenge.org/).
-
 Please cite the following paper if you use the Z-SSMNet
 
 ```
@@ -15,27 +13,16 @@ Please cite the following paper if you use the Z-SSMNet
 }
 ```
 
-## Issues
-
-Please feel free to raise any issues you encounter [here](https://github.com/yuanyuan29/Z-SSMNet/issues).
-
 ## Installation
 
-`Z-SSMNet` can be pip-installed directly:
-
-```shell
-pip install git+https://github.com/yuanyuan29/Z-SSMNet.git
+git clone the repository
+Ensure that you have a Python version after 3.10 and before 3.13 
+Install the correct verions of pytorch
+Example:
+  #Cuda Version 12.6
+  #pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126
+pip install -r requirements.txt
 ```
-
-Alternatively, `Z-SSMNet` can be installed from source:
-
-```shell
-git clone https://github.com/yuanyuan29/Z-SSMNet.git
-cd Z-SSMNet
-pip install -e .
-```
-
-This ensures the scripts are present locally, which enables you to run the provided Python scripts. Additionally, this allows you to modify the offered solutions, due to the `-e` option.
 
 ## General Setup
 
@@ -71,18 +58,7 @@ unzip picai_public_images_fold2.zip -d /input/images/
 unzip picai_public_images_fold3.zip -d /input/images/
 unzip picai_public_images_fold4.zip -d /input/images/
 ```
-
-In case `unzip` is not installed, you can use Docker to unzip the files:
-
-```shell
-docker run --cpus=2 --memory=8gb --rm -v /path/to/input:/input yuanyuan29/z-ssmnet:latest unzip /input/picai_public_images_fold0.zip -d /input/images/
-docker run --cpus=2 --memory=8gb --rm -v /path/to/input:/input yuanyuan29/z-ssmnet:latest unzip /input/picai_public_images_fold1.zip -d /input/images/
-docker run --cpus=2 --memory=8gb --rm -v /path/to/input:/input yuanyuan29/z-ssmnet:latest unzip /input/picai_public_images_fold2.zip -d /input/images/
-docker run --cpus=2 --memory=8gb --rm -v /path/to/input:/input yuanyuan29/z-ssmnet:latest unzip /input/picai_public_images_fold3.zip -d /input/images/
-docker run --cpus=2 --memory=8gb --rm -v /path/to/input:/input yuanyuan29/z-ssmnet:latest unzip /input/picai_public_images_fold4.zip -d /input/images/
-```
-
-Please follow the [instructions here](https://github.com/yuanyuan29/Z-SSMNet/blob/master/z-nnmnet.md#z-nnmnet---docker-setup) to set up the Docker container.
+Note, I have found that it is quicker to install from the documentation
 
 Also, collect the training annotations via the following command:
 
@@ -127,16 +103,6 @@ python src/z_ssmnet/prepare_data_semi_supervised.py
 ```
 
 To adapt/modify the preprocessing pipeline or its default specifications, please make changes to the [`prepare_data_semi_supervised.py`](https://github.com/yuanyuan29/Z-SSMNet/blob/master/src/z_ssmnet/prepare_data_semi_supervised.py) script accordingly.
-
-Alternatively, you can use Docker to run the Python script:
-
-```shell
-docker run --cpus=2 --memory=16gb --rm \
-    -v /path/to/input/:/input/ \
-    -v /path/to/workdir/:/workdir/ \
-    -v /path/to/Z-SSMNet:/scripts/Z-SSMNet/ \
-    yuanyuan29/z-ssmnet:latest python3 /scripts/Z-SSMNet/src/z_ssmnet/prepare_data_semi_supervised.py
-```
 
 If you want to train the supervised model (only using the data with manual labels), prepare the dataset using [`prepare_data.py`](https://github.com/yuanyuan29/Z-SSMNet/blob/master/src/z_ssmnet/prepare_data.py) and replace `Task2302_z-nnmnet` with `Task2301_z-nnmnet` in the following commands.
 
