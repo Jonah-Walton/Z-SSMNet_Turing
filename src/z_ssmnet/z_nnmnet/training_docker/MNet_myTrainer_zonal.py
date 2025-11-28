@@ -34,32 +34,7 @@ from batchgenerators.utilities.file_and_folder_operations import *
 
 from models.MNet_SegmentationNetwork import MNet
 
-from nnunet.training.loss_functions.crossentropy import RobustCrossEntropyLoss
-from nnunet.training.network_training.nnUNet_variants.loss_function.nnUNetTrainerV2_focalLoss import FocalLoss
-
-# TODO: replace FocalLoss by fixed implemetation (and set smooth=0 in that one?)
-
-class FL_and_CE_loss(nn.Module):
-    def __init__(self, fl_kwargs=None, ce_kwargs=None, alpha=0.5, aggregate="sum"):
-        super(FL_and_CE_loss, self).__init__()
-        if fl_kwargs is None:
-            fl_kwargs = {}
-        if ce_kwargs is None:
-            ce_kwargs = {}
-
-        self.aggregate = aggregate
-        self.fl = FocalLoss(apply_nonlin=nn.Softmax(), **fl_kwargs)
-        self.ce = RobustCrossEntropyLoss(**ce_kwargs)
-        self.alpha = alpha
-
-    def forward(self, net_output, target):
-        fl_loss = self.fl(net_output, target)
-        ce_loss = self.ce(net_output, target)
-        if self.aggregate == "sum":
-            result = self.alpha*fl_loss + (1-self.alpha)*ce_loss
-        else:
-            raise NotImplementedError("nah son")
-        return result
+from fl_and_ce_loss import FL_and_CE_loss
 
 class myTrainer_zonal(nnUNetTrainer):
     """
@@ -100,7 +75,7 @@ class myTrainer_zonal(nnUNetTrainer):
             self.process_plans(self.plans)
             self.setup_DA_params()
 
-            #====================deep supervision setting
+            #deep supervision setting
             print('===============:',self.patch_size) # (z, x, y)
             if self.patch_size[0] >= 32:
                 z_scale = [0.5, 0.25, 0.125]
@@ -249,12 +224,17 @@ class myTrainer_zonal(nnUNetTrainer):
         self.network.do_ds = ds
         return ret
 
-    def predict_preprocessed_data_return_seg_and_softmax(self, data: np.ndarray, do_mirroring: bool = True,
+    def predict_preprocessed_data_return_seg_and_softmax(self, data: np.ndarray,
+                                                         do_mirroring: bool = True,
                                                          mirror_axes: Tuple[int] = None,
-                                                         use_sliding_window: bool = True, step_size: float = 0.5,
-                                                         use_gaussian: bool = True, pad_border_mode: str = 'constant',
-                                                         pad_kwargs: dict = None, all_in_gpu: bool = False,
-                                                         verbose: bool = True, mixed_precision=True) -> Tuple[np.ndarray, np.ndarray]:
+                                                         use_sliding_window: bool = True,
+                                                         step_size: float = 0.5,
+                                                         use_gaussian: bool = True,
+                                                         pad_border_mode: str = 'constant',
+                                                         pad_kwargs: dict = None,
+                                                         all_in_gpu: bool = False,
+                                                         verbose: bool = True,
+                                                         mixed_precision=True) -> Tuple[np.ndarray, np.ndarray]:
         """
         We need to wrap this because we need to enforce self.network.do_ds = False for prediction
         """
@@ -264,9 +244,11 @@ class myTrainer_zonal(nnUNetTrainer):
                                                                        do_mirroring=do_mirroring,
                                                                        mirror_axes=mirror_axes,
                                                                        use_sliding_window=use_sliding_window,
-                                                                       step_size=step_size, use_gaussian=use_gaussian,
+                                                                       step_size=step_size,
+                                                                       use_gaussian=use_gaussian,
                                                                        pad_border_mode=pad_border_mode,
-                                                                       pad_kwargs=pad_kwargs, all_in_gpu=all_in_gpu,
+                                                                       pad_kwargs=pad_kwargs,
+                                                                       all_in_gpu=all_in_gpu,
                                                                        verbose=verbose,
                                                                        mixed_precision=mixed_precision)
         self.network.do_ds = ds
