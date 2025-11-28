@@ -18,6 +18,7 @@ import shutil
 from pathlib import Path
 from subprocess import check_call, CalledProcessError
 
+from config.training_config import Training_Config
 
 def main(taskname="Task2302_z-nnmnet"):
     """Train Z-SSMNet semi-supervised model."""
@@ -25,22 +26,31 @@ def main(taskname="Task2302_z-nnmnet"):
     parser = argparse.ArgumentParser()
 
     # Input arguments (use Windows-friendly defaults)
-    parser.add_argument('--workdir', type=str, default=str(Path("./workdir")))
-    parser.add_argument('--preprocesseddir', type=str, default=os.environ.get('PREPROCESSED_DIR', "./input/preprocessed"))
-    parser.add_argument('--pretrainedweightsdir', type=str, default=os.environ.get('PRETRAINED_WEIGHTS_DIR', "./input/pretrained"))
-    parser.add_argument('--outputdir', type=str, default=os.environ.get('OUTPUT_DIR', "./output"))
-    parser.add_argument('--checkpointsdir', type=str, default="./checkpoints")
-    parser.add_argument('--nnUNet_n_proc_DA', type=int, default=None)
-    parser.add_argument('--folds', type=int, nargs="+", default=(0, 1, 2, 3, 4), help="Folds to train. Default: 0 1 2 3 4")
+    # parser.add_argument('--workdir', type=str, default=str(Path("./workdir")))
+    # parser.add_argument('--preprocesseddir', type=str, default=os.environ.get('PREPROCESSED_DIR', "./input/preprocessed"))
+    # parser.add_argument('--pretrainedweightsdir', type=str, default=os.environ.get('PRETRAINED_WEIGHTS_DIR', "./input/pretrained"))
+    # parser.add_argument('--outputdir', type=str, default=os.environ.get('OUTPUT_DIR', "./output"))
+    # parser.add_argument('--checkpointsdir', type=str, default="./checkpoints")
+    # parser.add_argument('--nnUNet_n_proc_DA', type=int, default=None)
+    # parser.add_argument('--folds', type=int, nargs="+", default=(0, 1, 2, 3, 4), help="Folds to train. Default: 0 1 2 3 4")
 
-    args, _ = parser.parse_known_args()
+    # args, _ = parser.parse_known_args()
+
+    config = Training_Config()
 
     # Paths
-    workdir = Path(args.workdir)
-    output_dir = Path(args.outputdir)
-    checkpoints_dir = Path(args.checkpointsdir)
-    preprocessed_dir = Path(args.preprocesseddir)
-    pretrainedweights_dir = Path(args.pretrainedweightsdir)
+    # workdir = Path(args.workdir)
+    # output_dir = Path(args.outputdir)
+    # checkpoints_dir = Path(args.checkpointsdir)
+    # preprocessed_dir = Path(args.preprocesseddir)
+    # pretrainedweights_dir = Path(args.pretrainedweightsdir)
+
+    # Paths
+    workdir = Path(config.workdir)
+    output_dir = Path(config.outputdir)
+    checkpoints_dir = Path(config.checkpointsdir)
+    preprocessed_dir = Path(config.preprocesseddir)
+    pretrainedweights_dir = Path(config.pretrainedweightsdir)
 
     workdir.mkdir(parents=True, exist_ok=True)
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -49,8 +59,11 @@ def main(taskname="Task2302_z-nnmnet"):
     prepdir = preprocessed_dir / "nnUNet_preprocessed"
     os.environ["prepdir"] = prepdir.as_posix()
 
-    if args.nnUNet_n_proc_DA is not None:
-        os.environ["nnUNet_n_proc_DA"] = str(args.nnUNet_n_proc_DA)
+    # if args.nnUNet_n_proc_DA is not None:
+    #     os.environ["nnUNet_n_proc_DA"] = str(args.nnUNet_n_proc_DA)
+
+    if config.nnUNet_n_proc_DA is not None:
+        os.environ["nnUNet_n_proc_DA"] = str(config.nnUNet_n_proc_DA)
 
     print("===== PATHS =====")
     print(f"workdir: {workdir}")
@@ -65,7 +78,8 @@ def main(taskname="Task2302_z-nnmnet"):
                            "Make sure nnUNet is installed and added to PATH.")
 
     # Train
-    for fold in args.folds:
+    # for fold in args.folds:
+    for fold in config.folds:
         print(f"\n=== Training fold {fold} ===")
 
         split_file = prepdir / taskname / "splits_final.json"
@@ -96,7 +110,8 @@ def main(taskname="Task2302_z-nnmnet"):
     export_dir = output_dir / f"picai_nnunet_gc_algorithm/results/nnUNet/3d_fullres/{taskname}/myTrainer_zonal__nnUNetPlansv2.1"
 
     for checkpoint in ["model_best", "model_final_checkpoint"]:
-        for fold in args.folds:
+        # for fold in args.folds:
+        for fold in config.folds:
             fold_dir = results_dir / f"fold_{fold}"
             out_fold = export_dir / f"fold_{fold}"
             out_fold.mkdir(parents=True, exist_ok=True)

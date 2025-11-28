@@ -12,8 +12,8 @@ import numpy as np
 import SimpleITK as sitk
 from tqdm import tqdm
 import argparse
-from glob import glob
 from setup_config import setup_config
+from config.ssl_generator_config import SSL_Generator_Config
 
 def safe_normalize(arr):
     """Normalize array to [0,1], tolerant to constant arrays."""
@@ -207,26 +207,44 @@ def make_cubes(
     print(f"Saved: {out_name}")
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Generate 3D training cubes from PICAI-style folders (cross-platform)")
-    parser.add_argument("--fold", type=int, required=True, help="fold of subset (0-5)")
-    parser.add_argument("--input_rows", type=int, default=64)
-    parser.add_argument("--input_cols", type=int, default=64)
-    parser.add_argument("--input_deps", type=int, default=16)
-    parser.add_argument("--crop_rows", type=int, default=64)
-    parser.add_argument("--crop_cols", type=int, default=64)
-    parser.add_argument("--data", type=str, required=True, help="directory containing subset0..subset5 folders")
-    parser.add_argument("--save", type=str, required=True, help="output directory for generated cubes")
-    parser.add_argument("--scale", type=int, default=12)
-    args = parser.parse_args()
+    generator_config = SSL_Generator_Config()
+
+    # Probably should be input variables: fold, data
+    # Since fold is the target fold for make_cubes
+    # data is the directory containing hte subset_fold folder (but might be the same for all folds)
 
     make_cubes(
-        fold=args.fold,
-        input_rows=args.input_rows,
-        input_cols=args.input_cols,
-        input_deps=args.input_deps,
-        crop_rows=args.crop_rows,
-        crop_cols=args.crop_cols,
-        data_dir=args.data,
-        save_dir=args.save,
-        scale=args.scale,
+        fold=generator_config.fold,
+        input_rows=generator_config.input_rows,
+        input_cols=generator_config.input_cols,
+        input_deps=generator_config.input_deps,
+        crop_rows=generator_config.crop_rows,
+        crop_cols=generator_config.crop_cols,
+        data_dir=generator_config.data,
+        save_dir=generator_config.save,
+        scale=generator_config.scale,
     )
+
+    # parser = argparse.ArgumentParser(description="Generate 3D training cubes from PICAI-style folders (cross-platform)")
+    # parser.add_argument("--fold", type=int, required=True, help="fold of subset (0-5)")
+    # parser.add_argument("--input_rows", type=int, default=64)
+    # parser.add_argument("--input_cols", type=int, default=64)
+    # parser.add_argument("--input_deps", type=int, default=16)
+    # parser.add_argument("--crop_rows", type=int, default=64)
+    # parser.add_argument("--crop_cols", type=int, default=64)
+    # parser.add_argument("--data", type=str, required=True, help="directory containing subset0..subset5 folders")
+    # parser.add_argument("--save", type=str, required=True, help="output directory for generated cubes")
+    # parser.add_argument("--scale", type=int, default=12)
+    # args = parser.parse_args()
+
+    # make_cubes(
+    #     fold=args.fold,
+    #     input_rows=args.input_rows,
+    #     input_cols=args.input_cols,
+    #     input_deps=args.input_deps,
+    #     crop_rows=args.crop_rows,
+    #     crop_cols=args.crop_cols,
+    #     data_dir=args.data,
+    #     save_dir=args.save,
+    #     scale=args.scale,
+    # )

@@ -16,22 +16,37 @@ import os
 import shutil
 import argparse
 import glob
+from config.zonal_segmentation_config import Zonal_Segmentation_Config
 
-parser = argparse.ArgumentParser()
-parser.add_argument('--images_path', type=str, default="/workdir/nnUNet_raw_data/Task2302_z-nnmnet/imagesTr")
-parser.add_argument('--images_zonal_path', type=str, default="/workdir/nnUNet_raw_data/Task2302_z-nnmnet/images_zonal")
-args = parser.parse_args()
+config = Zonal_Segmentation_Config()
 
-if not os.path.exists(args.images_zonal_path):
-    os.makedirs(args.images_zonal_path)
+if not os.path.exists(config.images_zonal_path):
+    os.makedirs(config.images_zonal_path)
 
-cases = glob.glob(os.path.join(args.images_path, "*_0000.nii.gz"))
+cases = glob.glob(os.path.join(config.images_path, "*_0000.nii.gz"))
 cases = [os.path.basename(case) for case in cases]
 
 for case in cases:
-    t2_path = os.path.join(args.images_path, case)
-    adc_path = os.path.join(args.images_path, case.replace("_0000.nii.gz", "_0001.nii.gz"))
-    shutil.copyfile(t2_path, os.path.join(args.images_zonal_path, case))
-    shutil.copyfile(adc_path, os.path.join(args.images_zonal_path, case.replace("_0000.nii.gz", "_0001.nii.gz")))
+    t2_path = os.path.join(config.images_path, case)
+    adc_path = os.path.join(config.images_path, case.replace("_0000.nii.gz", "_0001.nii.gz"))
+    shutil.copyfile(t2_path, os.path.join(config.images_zonal_path, case))
+    shutil.copyfile(adc_path, os.path.join(config.images_zonal_path, case.replace("_0000.nii.gz", "_0001.nii.gz")))
+
+# parser = argparse.ArgumentParser()
+# parser.add_argument('--images_path', type=str, default="/workdir/nnUNet_raw_data/Task2302_z-nnmnet/imagesTr")
+# parser.add_argument('--images_zonal_path', type=str, default="/workdir/nnUNet_raw_data/Task2302_z-nnmnet/images_zonal")
+# args = parser.parse_args()
+
+# if not os.path.exists(args.images_zonal_path):
+#     os.makedirs(args.images_zonal_path)
+
+# cases = glob.glob(os.path.join(args.images_path, "*_0000.nii.gz"))
+# cases = [os.path.basename(case) for case in cases]
+
+# for case in cases:
+#     t2_path = os.path.join(args.images_path, case)
+#     adc_path = os.path.join(args.images_path, case.replace("_0000.nii.gz", "_0001.nii.gz"))
+#     shutil.copyfile(t2_path, os.path.join(args.images_zonal_path, case))
+#     shutil.copyfile(adc_path, os.path.join(args.images_zonal_path, case.replace("_0000.nii.gz", "_0001.nii.gz")))
 
 print("well done")

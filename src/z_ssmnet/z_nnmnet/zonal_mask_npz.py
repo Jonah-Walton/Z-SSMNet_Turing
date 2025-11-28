@@ -22,6 +22,7 @@ from typing import Union
 import numpy as np
 import SimpleITK as sitk
 
+from config.znnmnet_config import ZNNMNet_Config
 
 def prepare_zonal_mask_npz(
     data_path: Union[Path, str],
@@ -77,12 +78,18 @@ def prepare_zonal_mask_npz(
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--data_path', type=str, default='/workdir/results/nnUNet/3d_fullres/Task990_prostate_zonal_Seg/nnUNetTrainerV2__nnUNetPlansv2.1/fold_0/predictions_post/')
-    parser.add_argument('--save_path', type=str, default='/workdir/nnUNet_preprocessed/Task2302_z-nnmnet/nnUNetData_plans_v2.1_stage0/')
-    args = parser.parse_args()
-                
+    # parser = argparse.ArgumentParser()
+    # parser.add_argument('--data_path', type=str, default='/workdir/results/nnUNet/3d_fullres/Task990_prostate_zonal_Seg/nnUNetTrainerV2__nnUNetPlansv2.1/fold_0/predictions_post/')
+    # parser.add_argument('--save_path', type=str, default='/workdir/nnUNet_preprocessed/Task2302_z-nnmnet/nnUNetData_plans_v2.1_stage0/')
+    # args = parser.parse_args()
+            
+    # prepare_zonal_mask_npz(
+    #     data_path=args.data_path,
+    #     save_path=args.save_path
+    # )
+
+    config = ZNNMNet_Config()
     prepare_zonal_mask_npz(
-        data_path=args.data_path,
-        save_path=args.save_path
+        data_path=config.data_path,
+        save_path=config.save_path
     )

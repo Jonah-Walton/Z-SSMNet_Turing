@@ -11,6 +11,7 @@ from pathlib import Path
 
 from z_ssmnet.ssl_read_data_from_disk.pretrain.ssl_mnet_zonal import pretrain
 
+from config.training_config import Training_Config
 
 def safe_copytree(src: Path, dst: Path):
     """
@@ -23,17 +24,23 @@ def safe_copytree(src: Path, dst: Path):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Pretrain nnU-Net model (cross-platform).")
+    # parser = argparse.ArgumentParser(description="Pretrain nnU-Net model (cross-platform).")
 
-    parser.add_argument("--preprocesseddir", type=str, default=os.environ.get("SM_CHANNEL_PREPROCESSED", "./preprocessed"), help="Directory containing preprocessed input data.")
-    parser.add_argument("--outputdir", type=str, default=os.environ.get("SM_MODEL_DIR", "./output"), help="Directory to save pretrained model.")
-    parser.add_argument( "--checkpointsdir", type=str, default="./checkpoints", help="Directory where checkpoints will be stored.")
+    # parser.add_argument("--preprocesseddir", type=str, default=os.environ.get("SM_CHANNEL_PREPROCESSED", "./preprocessed"), help="Directory containing preprocessed input data.")
+    # parser.add_argument("--outputdir", type=str, default=os.environ.get("SM_MODEL_DIR", "./output"), help="Directory to save pretrained model.")
+    # parser.add_argument( "--checkpointsdir", type=str, default="./checkpoints", help="Directory where checkpoints will be stored.")
 
-    args = parser.parse_args()
+    # args = parser.parse_args()
 
-    preprocessed_dir = Path(args.preprocesseddir)
-    output_dir = Path(args.outputdir)
-    checkpoints_dir = Path(args.checkpointsdir)
+    # preprocessed_dir = Path(args.preprocesseddir)
+    # output_dir = Path(args.outputdir)
+    # checkpoints_dir = Path(args.checkpointsdir)
+
+
+    config = Training_Config()
+    preprocessed_dir = Path(config.preprocesseddir)
+    output_dir = Path(config.outputdir)
+    checkpoints_dir = Path(config.checkpointsdir)
 
     output_dir.mkdir(parents=True, exist_ok=True)
 

@@ -12,10 +12,11 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import argparse
+#import argparse
 import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+from config.split_config import Split_Config
 
 def export_splits(
     train_splits: Optional[Dict[str, Any]] = None,
@@ -25,11 +26,14 @@ def export_splits(
 ) -> None:
     """Export dataset configuration files to disk"""
     if output_folder is None:
-        parser = argparse.ArgumentParser(description='Command Line Arguments')
-        parser.add_argument("-o", "--output", type=str, required=True,
-                            help="Output path to store cross-validation splits")
-        args = parser.parse_args()
-        output_folder = args.output
+        config = Split_Config()
+        output_folder = config.output
+    #  if output_folder is None:
+    #      parser = argparse.ArgumentParser(description='Command Line Arguments')
+    #      parser.add_argument("-o", "--output", type=str, required=True,
+    #                          help="Output path to store cross-validation splits")
+    #      args = parser.parse_args()
+    #      output_folder = args.output
 
     output_folder: Path = Path(output_folder)
     output_folder.mkdir(parents=True, exist_ok=True)

@@ -22,29 +22,39 @@ from picai_baseline.prepare_data_semi_supervised import prepare_data_semi_superv
 from z_ssmnet.ssl_read_data_from_disk.data_preprocessing_zonal import data_preprocessing_zonal
 from z_ssmnet.z_nnmnet.zonal_mask_npz import prepare_zonal_mask_npz
 
+from config.training_config import Training_Config
 
 def main(taskname="Task2302_z-nnmnet"):
     """Preprocess data for Z-SSMNet model training."""
-    parser = argparse.ArgumentParser()
+    # parser = argparse.ArgumentParser()
 
     # input data and model directories
-    parser.add_argument('--workdir', type=str, default="/workdir")
-    parser.add_argument('--imagesdir', type=str, default=os.environ.get('SM_CHANNEL_IMAGES', "/input/images"))
-    parser.add_argument('--labelsdir', type=str, default=os.environ.get('SM_CHANNEL_LABELS', "/input/picai_labels"))
-    parser.add_argument('--outputdir', type=str, default=os.environ.get('SM_MODEL_DIR', "/output"))
-    parser.add_argument('--splits', type=str, default="picai_pub",
-                        help="Cross-validation splits. Can be a path to a json file or one of the predefined splits: "
-                             "picai_pub, picai_pubpriv, picai_pub_nnunet, picai_pubpriv_nnunet, picai_debug.")
-    parser.add_argument('--nnUNet_tf', type=int, default=8, help="Number of preprocessing threads for full images")
-    parser.add_argument('--nnUNet_tl', type=int, default=8, help="Number of preprocessing threads for low-res images")
+    # parser.add_argument('--workdir', type=str, default="/workdir")
+    # parser.add_argument('--imagesdir', type=str, default=os.environ.get('SM_CHANNEL_IMAGES', "/input/images"))
+    # parser.add_argument('--labelsdir', type=str, default=os.environ.get('SM_CHANNEL_LABELS', "/input/picai_labels"))
+    # parser.add_argument('--outputdir', type=str, default=os.environ.get('SM_MODEL_DIR', "/output"))
+    # parser.add_argument('--splits', type=str, default="picai_pub",
+    #                     help="Cross-validation splits. Can be a path to a json file or one of the predefined splits: "
+    #                          "picai_pub, picai_pubpriv, picai_pub_nnunet, picai_pubpriv_nnunet, picai_debug.")
+    # parser.add_argument('--nnUNet_tf', type=int, default=8, help="Number of preprocessing threads for full images")
+    # parser.add_argument('--nnUNet_tl', type=int, default=8, help="Number of preprocessing threads for low-res images")
 
-    args, _ = parser.parse_known_args()
+    # args, _ = parser.parse_known_args()
 
     # paths
-    workdir = Path(args.workdir)
-    images_dir = Path(args.imagesdir)
-    labels_dir = Path(args.labelsdir)
-    output_dir = Path(args.outputdir)
+    # workdir = Path(args.workdir)
+    # images_dir = Path(args.imagesdir)
+    # labels_dir = Path(args.labelsdir)
+    # output_dir = Path(args.outputdir)
+
+    config = Training_Config()
+    # paths
+    workdir = Path(config.workdir)
+    images_dir = Path(config.imagesdir)
+    labels_dir = Path(config.labelsdir)
+    output_dir = Path(config.outputdir)
+
+
     splits_path = workdir / f"nnUNet_raw_data/{taskname}/splits.json"
     zonal_mask_path = labels_dir / "anatomical_delineations/zonal_pz_tz/AI/Yuan23"
     nnUNet_prep_dir = output_dir / "nnUNet_preprocessed"
@@ -59,8 +69,11 @@ def main(taskname="Task2302_z-nnmnet"):
     os.environ["prepdir"] = str(nnUNet_prep_dir)
 
     # set nnU-Net's number of preprocessing threads
-    os.environ["nnUNet_tf"] = str(args.nnUNet_tf)
-    os.environ["nnUNet_tl"] = str(args.nnUNet_tl)
+    # os.environ["nnUNet_tf"] = str(args.nnUNet_tf)
+    # os.environ["nnUNet_tl"] = str(args.nnUNet_tl)
+    # set nnU-Net's number of preprocessing threads
+    os.environ["nnUNet_tf"] = str(config.nnUNet_tf)
+    os.environ["nnUNet_tl"] = str(config.nnUNet_tl)
 
     # descibe input data
     print(f"workdir: {workdir}")
@@ -74,11 +87,19 @@ def main(taskname="Task2302_z-nnmnet"):
     # Convert MHA Archive to nnU-Net Raw Data Archive
     # Also, we combine the provided human-expert annotations with the AI-derived annotations.
     print("Preprocessing data...")
+    # prepare_data_semi_supervised(
+    #     workdir=workdir,
+    #     imagesdir=images_dir,
+    #     labelsdir=labels_dir,
+    #     splits=args.splits,
+    #     task=taskname,
+    # )
+
     prepare_data_semi_supervised(
         workdir=workdir,
         imagesdir=images_dir,
         labelsdir=labels_dir,
-        splits=args.splits,
+        splits=config.splits,
         task=taskname,
     )
 

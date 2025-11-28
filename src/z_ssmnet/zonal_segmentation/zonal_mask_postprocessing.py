@@ -17,7 +17,8 @@
 import os
 import SimpleITK as sitk
 import numpy as np
-import argparse
+# import argparse
+from config.zonal_segmentation_config import Zonal_Segmentation_Config
 
 def mask_postprocessing(img: sitk.Image):
     # calculate connected components
@@ -82,21 +83,34 @@ def mask_postprocessing(img: sitk.Image):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--zonal_mask_dir', type=str, default='/workdir/results/nnUNet/3d_fullres/Task990_prostate_zonal_Seg/nnUNetTrainerV2__nnUNetPlansv2.1/fold_0/predictions/')
-    parser.add_argument('--zonal_mask_post_dir', type=str, default='/workdir/results/nnUNet/3d_fullres/Task990_prostate_zonal_Seg/nnUNetTrainerV2__nnUNetPlansv2.1/fold_0/predictions_post')
-    args = parser.parse_args()
-
-    if not os.path.exists(args.zonal_mask_post_dir):
-        os.makedirs(args.zonal_mask_post_dir)
+    config = Zonal_Segmentation_Config()
+    if not os.path.exists(config.zonal_mask_post_dir):
+        os.makedirs(config.zonal_mask_post_dir)
 
     # post-processing for zonal mask
-    for mask_name in os.listdir(args.zonal_mask_dir):
+    for mask_name in os.listdir(config.zonal_mask_dir):
         if mask_name.endswith('.nii.gz'):
-            mask_path = os.path.join(args.zonal_mask_dir, mask_name)
+            mask_path = os.path.join(config.zonal_mask_dir, mask_name)
             mask = sitk.ReadImage(mask_path)
             mask = mask_postprocessing(mask)
-            sitk.WriteImage(mask, os.path.join(args.zonal_mask_post_dir, mask_name))       
+            sitk.WriteImage(mask, os.path.join(config.zonal_mask_post_dir, mask_name)) 
+            
+    # parser = argparse.ArgumentParser()
+    # parser.add_argument('--zonal_mask_dir', type=str, default='/workdir/results/nnUNet/3d_fullres/Task990_prostate_zonal_Seg/nnUNetTrainerV2__nnUNetPlansv2.1/fold_0/predictions/')
+    # parser.add_argument('--zonal_mask_post_dir', type=str, default='/workdir/results/nnUNet/3d_fullres/Task990_prostate_zonal_Seg/nnUNetTrainerV2__nnUNetPlansv2.1/fold_0/predictions_post')
+    # args = parser.parse_args()
+
+    # if not os.path.exists(args.zonal_mask_post_dir):
+    #     os.makedirs(args.zonal_mask_post_dir)
+
+    # post-processing for zonal mask
+    # for mask_name in os.listdir(args.zonal_mask_dir):
+    #     if mask_name.endswith('.nii.gz'):
+    #         mask_path = os.path.join(args.zonal_mask_dir, mask_name)
+    #         mask = sitk.ReadImage(mask_path)
+    #         mask = mask_postprocessing(mask)
+    #         sitk.WriteImage(mask, os.path.join(args.zonal_mask_post_dir, mask_name))    
+    #    
     print("well done!")
 
 

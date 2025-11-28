@@ -22,6 +22,7 @@ from functools import reduce
 import numpy as np
 import SimpleITK as sitk
 
+from config.ssl_config import SSL_Config
 
 def resample(vol, mask=True, new_spacing=[0.5, 0.5, 3.0]):
     # Determine current pixel spacing
@@ -159,16 +160,25 @@ def data_preprocessing_zonal(
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--images_path', type=str, default='/workdir/nnUNet_raw_data/Task2302_z-nnmnet/imagesTr')
-    parser.add_argument('--zonal_mask_path', type=str, default='/workdir/results/nnUNet/3d_fullres/Task990_prostate_zonal_Seg/nnUNetTrainerV2__nnUNetPlansv2.1/fold_0/predictions_post')
-    parser.add_argument('--output_path', type=str, default='/workdir/SSL/data')
-    parser.add_argument('--splits_path', type=str, default='/workdir/nnUNet_raw_data/Task2302_z-nnmnet/splits.json')
-    args = parser.parse_args()
+    config = SSL_Config()
 
     data_preprocessing_zonal(
-        images_path=args.images_path,
-        zonal_mask_path=args.zonal_mask_path,
-        output_path=args.output_path,
-        splits_path=args.splits_path
+        images_path=config.images_path,
+        zonal_mask_path=config.zonal_mask_path,
+        output_path=config.output_path,
+        splits_path=config.splits_path
     )
+
+    # parser = argparse.ArgumentParser()
+    # parser.add_argument('--images_path', type=str, default='/workdir/nnUNet_raw_data/Task2302_z-nnmnet/imagesTr')
+    # parser.add_argument('--zonal_mask_path', type=str, default='/workdir/results/nnUNet/3d_fullres/Task990_prostate_zonal_Seg/nnUNetTrainerV2__nnUNetPlansv2.1/fold_0/predictions_post')
+    # parser.add_argument('--output_path', type=str, default='/workdir/SSL/data')
+    # parser.add_argument('--splits_path', type=str, default='/workdir/nnUNet_raw_data/Task2302_z-nnmnet/splits.json')
+    # args = parser.parse_args()
+
+    # data_preprocessing_zonal(
+    #     images_path=args.images_path,
+    #     zonal_mask_path=args.zonal_mask_path,
+    #     output_path=args.output_path,
+    #     splits_path=args.splits_path
+    # )
